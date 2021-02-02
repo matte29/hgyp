@@ -11,6 +11,8 @@ pub struct BasicPassword {
     uses_symbol: bool,
 
     uses_number: bool,
+
+    need_to_run: bool,
 }
 
 impl BasicPassword {
@@ -22,6 +24,7 @@ impl BasicPassword {
             uses_uppercase: false,
             uses_symbol: false,
             uses_number: false,
+            need_to_run: true,
         }
     }
     pub fn get_score(input: String) -> i8 {
@@ -39,48 +42,56 @@ impl BasicPassword {
         let mut test = BasicPassword::new();
         if input.len() >= 15 {
             test.good_length = true;
-        }
-        for i in input.chars() {
-            for j in lower_case_characters.chars() {
-                if i == j {
-                    test.uses_lowercase = true;
-                }
-            }
-            for j in upper_case_characters.chars() {
-                if i == j {
-                    test.uses_uppercase = true;
-                }
-            }
-            for j in numbers.chars() {
-                if i == j {
-                    test.uses_number = true;
-                }
-            }
-            for j in symbols.chars() {
-                if i == j {
-                    test.uses_symbol = true;
-                }
-            }
-
-            if test.uses_lowercase && test.uses_uppercase && test.uses_number && test.uses_symbol {
-                break;
-            }
+        } else if input.len() < 8 {
+            test.need_to_run = false;
         }
 
-        if test.uses_lowercase == true {
-            test.score += 1;
-        }
-        if test.uses_uppercase == true {
-            test.score += 1;
-        }
-        if test.uses_number == true {
-            test.score += 1;
-        }
-        if test.uses_symbol == true {
-            test.score += 1;
-        }
-        if test.good_length == true {
-            test.score += 1;
+        if test.need_to_run {
+            for i in input.chars() {
+                for j in lower_case_characters.chars() {
+                    if i == j {
+                        test.uses_lowercase = true;
+                    }
+                }
+                for j in upper_case_characters.chars() {
+                    if i == j {
+                        test.uses_uppercase = true;
+                    }
+                }
+                for j in numbers.chars() {
+                    if i == j {
+                        test.uses_number = true;
+                    }
+                }
+                for j in symbols.chars() {
+                    if i == j {
+                        test.uses_symbol = true;
+                    }
+                }
+
+                if test.uses_lowercase
+                    && test.uses_uppercase
+                    && test.uses_number
+                    && test.uses_symbol
+                {
+                    break;
+                }
+            }
+            if test.uses_lowercase == true {
+                test.score += 1;
+            }
+            if test.uses_uppercase == true {
+                test.score += 1;
+            }
+            if test.uses_number == true {
+                test.score += 1;
+            }
+            if test.uses_symbol == true {
+                test.score += 1;
+            }
+            if test.good_length == true {
+                test.score += 1;
+            }
         }
         test
     }
@@ -107,8 +118,16 @@ mod basic_passwords {
     }
 
     #[test]
-    fn get_score_pass_0_out_of_5() {
-        let x = String::from(" ");
+    fn get_score_pass_1_out_of_5() {
+        let x = String::from("thisisbad");
+        let result = BasicPassword::get_score(x);
+
+        assert_eq!(1, result);
+    }
+
+    #[test]
+    fn get_score_0_out_of_5() {
+        let x = String::from("Jonny");
         let result = BasicPassword::get_score(x);
 
         assert_eq!(0, result);
