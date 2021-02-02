@@ -24,10 +24,10 @@ impl BasicPassword {
             uses_number: false,
         }
     }
-    pub fn get_score(input: String) {
+    pub fn get_score(input: String) -> i8 {
         let x = BasicPassword::run_test(input);
-
-        println!("Your Score is {} / 5", x.score);
+        let return_value = x.score;
+        return_value
     }
 
     fn run_test(input: String) -> BasicPassword {
@@ -83,5 +83,34 @@ impl BasicPassword {
             test.score += 1;
         }
         test
+    }
+}
+
+//`------------------
+//` name: basic_passwords
+//`
+//` @param: none
+//`
+//` Purpose: Tests get_score, and through using that tests run_test
+//`
+//` Return's: /*Return Value*/
+//`------------------
+#[cfg(test)]
+mod basic_passwords {
+    use super::*;
+    #[test]
+    fn get_score_pass_5_out_of_5() {
+        let x = String::from("thisIs#agoodPassw0rd");
+        let result = BasicPassword::get_score(x);
+
+        assert_eq!(5, result);
+    }
+
+    #[test]
+    fn get_score_pass_0_out_of_5() {
+        let x = String::from(" ");
+        let result = BasicPassword::get_score(x);
+
+        assert_eq!(0, result);
     }
 }
