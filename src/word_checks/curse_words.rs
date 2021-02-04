@@ -3,21 +3,19 @@ use std::io::{BufRead, BufReader};
 
 #[derive(Debug)]
 pub struct CurseWords {
+    //` Score for Curse Words tests
     score: i8,
 
-    // Length of password was greater than 15 chars
-    good_length: bool,
-
-    // Found a word that was found in password that was 4 or less chars in length
+    //` Found a word that was found in password that was 4 or less chars in length
     has_word_less_4: i8,
 
-    // Found a word that was found in password that was of length 5 - 8
+    //` Found a word that was found in password that was of length 5 - 8
     has_word_5_through_8: i8,
 
-    // Found a word that was found in password that was longer than 8 characters
+    //` Found a word that was found in password that was longer than 8 characters
     has_word_greater_8: i8,
 
-    // Makes sure the password is at least greater than 8 chars long
+    //` Makes sure the password is at least greater than 8 chars long
     need_to_run: bool,
 }
 
@@ -25,7 +23,6 @@ impl CurseWords {
     fn new() -> CurseWords {
         CurseWords {
             score: 0,
-            good_length: false,
             has_word_less_4: 0,
             has_word_5_through_8: 0,
             has_word_greater_8: 0,
@@ -38,14 +35,11 @@ impl CurseWords {
         x
     }
 
-    //TODO put all of the lengths as their own variable
     fn run_test(input: String) -> CurseWords {
         let mut test = CurseWords::new();
 
         // Checks the length of the input
-        if input.len() >= 15 {
-            test.good_length = true;
-        } else if input.len() < 8 {
+        if input.len() < 8 {
             test.need_to_run = false;
         }
 
